@@ -100,7 +100,18 @@ io.sockets.on('connection', (socket) => {
             const otherSocketIds = Object.keys(clientsInRoom.sockets);
             for (let i = 0; i < otherSocketIds.length; i++) {
                 const otherSocket = io.sockets.connected[otherSocketIds[i]];
+                // io.sockets.connected是一个对象，其中存储了服务器上的所有活跃sockets。
+                // 通过提供socket ID (otherSocketIds[i])，我们可以从这个对象中获取特定的socket实例。
+                // 这里的otherSocket就代表了一个特定的客户端的连接。
                 otherSocket.emit('exit', message);
+                // 在Socket.io中，每一个socket实例都有一个emit方法，该方法允许服务器向这个特定的socket（即特定的客户端）发送一个事件。
+                // otherSocket.emit('exit', message);的用意是向特定的otherSocket这个客户端发送一个exit事件。这是为了告诉房间中的其他客户端有人退出了房间。
+
+                // 1. 注意和上面创建加入房间区分，如果使用 socket.emit('exit', message);，
+                // 它会向当前处理该事件的客户端（即触发这个服务器端代码执行的客户端）发送一个exit事件。
+                // 2. 注意和下面的广播区分，如果使用 socket.broadcast.emit('exit', message);，
+                // 它会向除了当前处理该事件的客户端（即触发这个服务器端代码执行的客户端）之外的所有客户端发送一个exit事件。
+
             }
         }
     });

@@ -37,7 +37,7 @@ const connect = roomid => {
 /**
  * 监听signal server创建房间或者加入房间成功的消息，signal server会判断房间里是否有人
  */
-socket.on('created', async data => {
+socket.on('created', async data => {    // 异步处理 允许代码在等待某个程序完成时继续执行其他代码。
     // data: [id,room,peers]
     console.log('created: ', data);
     // 保存signal server给我分配的socketId
@@ -51,7 +51,7 @@ socket.on('created', async data => {
         // 创建WebRtcPeerConnection // 注意：这个函数是下一个步骤写的。
         let pc = getWebRTCConnect(otherSocketId);
         // 创建offer
-        const offer = await pc.createOffer(THSConfig.offerOptions);
+        const offer = await pc.createOffer(THSConfig.offerOptions); // 这是一个异步操作，所以用await关键字等待它完成。
         // 发送offer
         onCreateOfferSuccess(pc, otherSocketId, offer);
     }
@@ -60,9 +60,9 @@ socket.on('created', async data => {
 
 /**
  * offer创建成功回调
- * @param {*} pc 
- * @param {*} otherSocketId 
- * @param {*} offer 
+ * @param {*} pc    是一个RTCPeerConnection对象。这是WebRTC的核心对象，代表一个与远程端点的连接。
+ * @param {*} otherSocketId     表示与之通信的远程用户的socket ID。
+ * @param {*} offer     是一个RTCSessionDescription对象，它描述了WebRTC连接的一些参数。
  */
 function onCreateOfferSuccess(pc, otherSocketId, offer) {
     console.log('createOffer: success ' + ' id:' + otherSocketId + ' offer: ', offer);
@@ -70,10 +70,10 @@ function onCreateOfferSuccess(pc, otherSocketId, offer) {
     pc.setLocalDescription(offer);
     // 构建offer
     const message = {
-        from: socketId,
-        to: otherSocketId,
-        room: roomId,
-        sdp: offer.sdp
+        from: socketId, // 发送方的socketId
+        to: otherSocketId,  // 接收方的socketId
+        room: roomId,   // 房间号
+        sdp: offer.sdp  // offer的sdp，offer的描述信息。SDP代表“会话描述协议”，是描述音频、视频通信会话的标准格式。
     };
     console.log('发送offer消息', message)
     // 发送offer消息
