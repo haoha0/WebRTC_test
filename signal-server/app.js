@@ -17,7 +17,12 @@ apps.listen(SSL_PORT);  // 指定https服务器监听的端口为8443
 
 
 // 使用socketIO在上面创建的HTTPS服务器上监听WebSocket连接
-const io = socketIO.listen(apps);
+// const io = socketIO.listen(apps);
+
+const io = socketIO.listen(apps, {
+    pingTimeout: 30000,  // 默认值是60000 (1分钟)
+    pingInterval: 10000  // 默认值是25000 (25秒)
+});
 
 // socket监听连接
 io.sockets.on('connection', (socket) => {

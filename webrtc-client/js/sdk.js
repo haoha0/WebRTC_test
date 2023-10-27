@@ -32,6 +32,7 @@ const connect = roomid => {
     socket.emit('createAndJoinRoom', {  // 发送一个createAndJoinRoom事件给信令服务器，传递的参数是一个对象{room:roomid}
         room: roomid
     });
+    console.log('发送成功')
 }
 
 /**
