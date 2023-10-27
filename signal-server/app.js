@@ -12,8 +12,8 @@ const options = {
 const apps = https.createServer(options);
 
 const SSL_PORT = 8443;
-
-apps.listen(SSL_PORT);  // 指定https服务器监听的端口为8443
+const LISTEN_ADDRESS = '192.168.43.175'; // 服务器地址，需要修改为你的服务器地址
+apps.listen(SSL_PORT, LISTEN_ADDRESS);  // 指定https服务器监听的端口为8443
 
 
 // 使用socketIO在上面创建的HTTPS服务器上监听WebSocket连接
@@ -162,7 +162,7 @@ io.sockets.on('connection', (socket) => {
 
     // 转发candidate消息至room其他客户端 [from,to,room,candidate[sdpMid,sdpMLineIndex,sdp]]
     socket.on('candidate', (message) => {
-        console.log('收到candidate: from ' + message.from + ' room:' + room + ' to ' + message.to);
+        console.log('收到candidate: from ' + message.from + ' room:' + message.room + ' to ' + message.to);
         // 根据id找到对应连接
         const otherClient = io.sockets.connected[message.to];
         if (!otherClient) {

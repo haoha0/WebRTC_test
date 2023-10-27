@@ -1,7 +1,8 @@
 // WebRTC配置文件
 const THSConfig = {
     // 信令服务器   信令是 WebRTC 中建立、管理和终止通信会话所需的过程。它用于协调通信、发送控制消息、发现其他对等体等
-    signalServer: 'wss://localhost:8443',
+    // signalServer: 'wss://localhost:8443',
+    signalServer: 'wss://192.168.43.175:8443',  // 地址需要修改为你的服务器地址
     // Offer/Answer模型请求配置
     offerOptions: {
       offerToReceiveAudio: true, // 请求接收音频
